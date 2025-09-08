@@ -32,6 +32,19 @@ if (process.env.NODE_ENV === "development") {
 
 
 //  [2] ROUTES
+// Root route for health/info
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "EC_V1 API is running",
+  });
+});
+
+// Lightweight health check
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ ok: true });
+});
+
 app.use("/api/v1/categories", categoryRoute);
 app.use("/api/v1/products", productRoute);
 app.use("/api/v1/subCategories", subCategoryRoute)
