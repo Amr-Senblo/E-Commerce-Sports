@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+require("./reviewModel");
 const { v4: uuidv4 } = require("uuid");
 
 const productSchema = new mongoose.Schema(

@@ -151,7 +151,10 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
       subCategories,
     } = req.body;
 
-    const updateData = { ...req.body };
+    const allowed = ["title","description","quantity","price","priceAfterDiscount","imageCover","images","mainCategory","subCategories"];
+    const updateData = Object.fromEntries(
+      Object.entries(req.body).filter(([k]) => allowed.includes(k))
+    );
 
     // Update slug if title is being updated
     if (title) {

@@ -4,15 +4,16 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const AppError = require("./utils/appError");
 
+// Load env BEFORE importing routes/middlewares that use them
+dotenv.config({
+    path: "./config.env",
+});
+
 const categoryRoute = require("./routes/categoryRoute");
 const productRoute = require("./routes/productRoute");
 const subCategoryRoute = require("./routes/subCategoryRoute");
 
 const { globalError, handleUnhandledRejection } = require("./middlewares/errorMiddleware");
-
-dotenv.config({
-    path: "./config.env",
-});
 
 const app = express();
 

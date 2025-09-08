@@ -9,6 +9,11 @@ const {
 } = require("../controllers/productController");
 
 const {
+  uploadProductImages,
+  mapProductImagesToBody,
+} = require("../middlewares/uploadMiddleware");
+
+const {
   getProductValidator,
   createProductValidator,
   updateProductValidator,
@@ -28,7 +33,10 @@ router
   .get(getAllProducts)
   .post(
     // protect, restrictTo("admin"), 
-    createProductValidator, createProduct);
+    uploadProductImages,
+    mapProductImagesToBody,
+    createProductValidator,
+    createProduct);
 router
   .route("/:id")
   .get(getProductValidator, getProduct)
