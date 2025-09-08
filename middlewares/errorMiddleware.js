@@ -1,5 +1,3 @@
-const { server } = require("../server");
-
 const sendErrorForDev = (err, res) =>
   res.status(err.statusCode).json({
     status: err.status,
@@ -30,13 +28,17 @@ exports.globalError = (err, req, res, next) => {
   }
 };
 
-// handle rejection outside express
-exports.handleUnhandledRejection = () => {
-  process.on("unhandledRejection", (err) => {
-    console.log(`Unhandled Regection Errors:${err.name}|${err.message}`);
-    server.close(() => {
-      console.error("Shutting down...");
+// Unhandled promise rejection handler compatible with serverless
+exports.handleUnhandledRejection = (err) => {
+  console.error(`Unhandled Rejection: ${err?.name}|${err?.message}`);
+  // In serverless environments, avoid process.exit or server.close
+  if (process.env.VERCEL) return;
+  // For traditional servers, exiting is acceptable during development
+  if (process.env.NODE_ENV !== "production") {
+    try {
       process.exit(1);
-    });
-  });
+    } catch (_) {
+      // noop
+    }
+  }
 };
